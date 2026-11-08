@@ -1,4 +1,8 @@
-# self-healing-whois
+<p align="center">
+  <img src="https://raw.githubusercontent.com/aditya162006/self-healing-whois/main/logo.png"
+       alt="self-healing-whois logo"
+       width="650">
+</p>
 
 This is my project for trying AI-assisted repair in a Python library. It is a fork of [python-whois](https://github.com/richardpenman/whois), which looks up domain registration information.
 
