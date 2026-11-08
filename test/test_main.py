@@ -2,7 +2,7 @@
 
 import unittest
 
-from whois import extract_domain
+from self_healing_whois import extract_domain
 
 
 class TestExtractDomain(unittest.TestCase):

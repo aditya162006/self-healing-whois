@@ -114,7 +114,7 @@ def cast_date(
 class WhoisEntry(dict):
     """Base class for parsing a Whois entries."""
 
-    # regular expressions to extract domain data from whois profile
+    # regular expressions to extract domain data from self_healing_whois profile
     # child classes will override this
     _regex: dict[str, str] = {
         "domain_name": r"Domain Name: *(.+)",
@@ -189,6 +189,10 @@ class WhoisEntry(dict):
                     self[attr] = values
                 else:
                     self[attr] = None
+
+        # Disabled by default; enabled clients only enqueue work in memory.
+        from .healing import observe
+        observe(self)
 
     def _preprocess(self, attr: str, value: str) -> Union[str, datetime]:
         value = value.strip()

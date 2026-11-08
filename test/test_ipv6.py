@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 import socket
 
-from whois.whois import NICClient
+from self_healing_whois.whois import NICClient
 
 
 class TestNICClientIPv6(unittest.TestCase):

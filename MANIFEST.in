@@ -1,2 +1,11 @@
-include whois/data/public_suffix_list.dat
+include self_healing_whois/data/public_suffix_list.dat
 include LICENSE.txt README.md
+include self_healing_whois/healing_corpus.json
+include pyproject.toml requirements.txt .env.example
+recursive-include docs *.md
+recursive-include examples *.py
+recursive-include scripts *.py
+recursive-include test *.py
+recursive-include test/samples *
+global-exclude *.pyc
+prune test/__pycache__

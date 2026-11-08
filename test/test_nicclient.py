@@ -2,7 +2,7 @@
 
 import unittest
 
-from whois.whois import NICClient
+from self_healing_whois.whois import NICClient
 
 
 class TestNICClient(unittest.TestCase):

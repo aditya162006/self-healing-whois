@@ -2,7 +2,7 @@
 
 import unittest
 
-from whois import whois
+from self_healing_whois import whois
 
 
 class TestQuery(unittest.TestCase):

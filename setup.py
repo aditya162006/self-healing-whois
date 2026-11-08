@@ -3,16 +3,18 @@ import setuptools
 
 
 def read(filename):
-    return open(os.path.join(os.path.dirname(__file__), filename)).read()
+    with open(os.path.join(os.path.dirname(__file__), filename), encoding="utf-8") as source:
+        return source.read()
 
 
 setuptools.setup(
-    name="python-whois",
-    version="0.9.6",
-    description="Whois querying and parsing of domain registration information.",
+    name="self-healing-whois",
+    version="0.1.1",
+    description="A python-whois fork with validated, LLM-assisted expiration parser repair.",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     classifiers=[
+        "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
@@ -22,15 +24,15 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
     ],
     keywords="whois, python",
-    author="Richard Penman",
-    author_email="richard.penman@gmail.com",
-    url="https://github.com/richardpenman/whois",
+    author="self-healing-whois contributors; upstream python-whois contributors",
+    project_urls={"Upstream": "https://github.com/richardpenman/whois"},
     license="MIT",
-    packages=["whois"],
-    package_dir={"whois": "whois"},
+    packages=["self_healing_whois"],
+    package_dir={"self_healing_whois": "self_healing_whois"},
+    package_data={"self_healing_whois": ["healing_corpus.json", "data/public_suffix_list.dat"]},
     install_requires=["python-dateutil"],
-    test_suite="nose.collector",
-    tests_require=["nose", "simplejson"],
+    python_requires=">=3.12",
+    extras_require={"dev": ["pytest", "build", "twine"]},
     include_package_data=True,
     zip_safe=False,
 )

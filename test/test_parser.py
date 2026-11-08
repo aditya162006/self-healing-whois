@@ -8,8 +8,8 @@ from glob import glob
 
 from dateutil.tz import tzoffset
 
-from whois.exceptions import WhoisUnknownDateFormatError
-from whois.parser import (
+from self_healing_whois.exceptions import WhoisUnknownDateFormatError
+from self_healing_whois.parser import (
     WhoisCa,
     WhoisEntry,
     cast_date,

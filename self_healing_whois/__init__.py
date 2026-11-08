@@ -8,9 +8,10 @@ import subprocess
 import sys
 from typing import Any, Optional, Pattern
 
-from .exceptions import WhoisError
+from .exceptions import WhoisError, WhoisHealingError
 from .parser import WhoisEntry
 from .whois import NICClient
+from .healing import enable_healing, disable as disable_healing, finish_lookup
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +38,7 @@ def whois(
     command: whether to use the native whois command (default False)
     executable: executable to use for native whois command (default 'whois')
     flags: flags to pass to the whois client (default 0)
-    inc_raw: whether to include the raw text from whois in the result (default False)
+    inc_raw: whether to include the raw text from self_healing_whois in the result (default False)
     quiet: whether to avoid printing output (default False)
     ignore_socket_errors: whether to ignore socket errors (default True)
     convert_punycode: whether to convert the given URL punycode (default True)
@@ -77,6 +78,7 @@ def whois(
         if not text:
             raise WhoisError("Whois command returned no output")
     entry = WhoisEntry.load(domain, text)
+    finish_lookup(entry)
     if inc_raw:
         entry["raw"] = text
     return entry

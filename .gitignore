@@ -1,1 +1,19 @@
 *.pyc
+__pycache__/
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+.venv/
+.env
+.env.*
+!.env.example
+*.log
+# Ignore leftover local data from older checkouts.
+*.sqlite*
+*.db
+*.db-wal
+*.db-shm
+.coverage
+htmlcov/
+.ruff_cache/

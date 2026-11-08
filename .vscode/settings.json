@@ -1,0 +1,19 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [
+    "test/test_library_healing.py",
+    "test/test_healing.py",
+    "test/test_healing_config.py",
+    "test/test_verify_ai_repair.py",
+    "test/test_parser.py"
+  ],
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.egg-info": true,
+    ".venv": true,
+    ".pytest_cache": true,
+    "build": true,
+    "dist": true
+  }
+}
