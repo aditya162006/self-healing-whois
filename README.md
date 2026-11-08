@@ -6,7 +6,20 @@ The original library already does the WHOIS lookup and most of the parsing. My a
 
 For example, a parser might understand `Expiry Date:` but miss `Domain valid until:`. This project sends the failed response to an AI provider, asks for a repair, checks it against old examples, and uses it if the checks pass.
 
-**This is still an experimental project.** I have tested normal domain lookups and a deliberately changed label with a real AI provider. That does not mean it can fix every registry format.
+## Why I built this
+
+WHOIS responses do not follow one consistent format. A changed field label can cause a parser to miss an expiration date that is still present.
+
+| Feature | Original `python-whois` | This fork |
+|---|---|---|
+| Parsing | Uses predefined regex patterns | Keeps the original parser and adds optional AI-assisted repair |
+| Unrecognized expiration label | May return `None` even when the date is present | Requests a repair when expiration extraction fails |
+| Fixing unsupported formats | Usually requires a manual parser update | Can generate and validate a repair during runtime |
+| Checking AI-generated repairs | Not applicable | Checks constrained regex proposals against relevant historical examples |
+| Reusing repairs | Uses patterns included in the library | Also caches accepted repairs in memory until the session ends |
+| AI requirements | No AI provider needed | Requires an API key, model, and endpoint only when healing is enabled |
+
+The goal is to reduce manual fixes for expiration-label changes. This is an experimental extension, not a replacement for every parser update, and it cannot recover a date that is absent from the response.
 
 ## What I added
 
