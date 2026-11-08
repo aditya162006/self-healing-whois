@@ -42,12 +42,17 @@ The repair runs in a background thread, but waiting for it still makes that look
 
 You need **Python 3.12 or newer**.
 
-Version `0.1.1` has been installed and tested from TestPyPI in a separate Codespaces environment:
+Install the library from [PyPI](https://pypi.org/project/self-healing-whois/):
 
 ```bash
-python -m pip install python-dateutil
-python -m pip install --index-url https://test.pypi.org/simple/ --no-deps self-healing-whois==0.1.1
+python -m pip install self-healing-whois
 ```
+
+You can then import it in your own Python project. You do not need to clone this repository or run the demo scripts to use the library.
+
+Version `0.1.1` was also tested from TestPyPI in a separate Codespaces environment.
+
+### Working on the source code
 
 To work on the code, clone or download this repository, open a terminal in its folder, and run:
 
@@ -75,7 +80,11 @@ python -m pip install -e ".[dev]"
 
 The package name is `self-healing-whois`, but the Python import is `self_healing_whois`. This keeps it separate from the original library's `whois` import.
 
-## Basic lookup
+## Using it as a library
+
+### Normal lookup
+
+Create a file called `lookup_domain.py` in your own project and add this code. Do not name your file `self_healing_whois.py`, because that would hide the installed package.
 
 You do not need an AI key for a normal lookup:
 
@@ -87,20 +96,36 @@ print(result)
 print(result.expiration_date)
 ```
 
+Run your file with:
+
+```bash
+python lookup_domain.py
+```
+
+The result supports both attribute and dictionary access:
+
+```python
+print(result.domain_name)
+print(result.registrar)
+print(result.expiration_date)
+print(result["expiration_date"])
+```
+
+Depending on the response, a field can be a single value, a list of values, or `None`. Without healing enabled, a missing expiration date is returned as `None`.
+
 WHOIS lookups need internet access. Some servers or networks may block or limit requests.
 
-## Using AI repair
+### Lookup with AI repair
 
 Pass all three settings yourself. The library does not choose a default provider.
 
 ```python
-from getpass import getpass
 import self_healing_whois
 
 client = self_healing_whois.enable_healing(
-    api_key=getpass("API key: "),
-    model=input("Model ID: ").strip(),
-    endpoint=input("Full chat-completions endpoint: ").strip(),
+    api_key="YOUR_API_KEY",
+    model="YOUR_MODEL_ID",
+    endpoint="https://YOUR_PROVIDER/chat/completions",
 )
 
 try:
@@ -112,7 +137,29 @@ finally:
     self_healing_whois.disable_healing()
 ```
 
-You can also pass strings or values from your application's environment variables. The prompts above are just one way to provide them. Do not put real keys in code that you upload to GitHub.
+Replace the three placeholders with your provider's settings, then run the file like any other Python script. These values are supplied by your code; the library does not prompt for them.
+
+For an application, you can read the settings from environment variables instead of putting the key in the file:
+
+```python
+import os
+import self_healing_whois
+
+client = self_healing_whois.enable_healing(
+    api_key=os.environ["WHOIS_LLM_API_KEY"],
+    model=os.environ["WHOIS_LLM_MODEL"],
+    endpoint=os.environ["WHOIS_LLM_ENDPOINT"],
+)
+
+try:
+    for domain in ["example.com", "thispersondoesnotexist.com"]:
+        result = self_healing_whois.whois(domain)
+        print(domain, result.expiration_date)
+finally:
+    self_healing_whois.disable_healing()
+```
+
+Set all three environment variables before running this example. This example does not automatically load a `.env` file. Do not commit real API keys to GitHub.
 
 The endpoint must support the chat-completions request format used by this project. The library does not automatically work with every provider's API format. Network and WHOIS errors can still happen separately from repair errors.
 
@@ -270,7 +317,7 @@ The failed WHOIS response is sent to the provider you configure. It can contain 
 
 ## Publishing and GitHub
 
-See [docs/PUBLISHING.md](docs/PUBLISHING.md) for the release steps. TestPyPI installation and the AI repair test have passed for `0.1.1`; a main PyPI release is a separate upload.
+See [docs/PUBLISHING.md](docs/PUBLISHING.md) for the release steps. Version `0.1.1` is available on PyPI. TestPyPI installation and the controlled AI repair test have also passed for this version.
 
 Before pushing, check that `.env`, `.venv`, caches, and build output are not included. `.env.example` is safe to commit because it only contains placeholders. Ignoring a file does not remove it from earlier commits if it was already tracked.
 
